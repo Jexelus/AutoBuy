@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "283213248299",
+    "project_id": "auto-buy-admin-e3ecji",
+    "storage_bucket": "auto-buy-admin-e3ecji.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:283213248299:android:250ebc352c42dd23db376e",
+        "android_client_info": {
+          "package_name": "com.blessed.autobuyadmin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEZ7opXw6af0aBMAor0mnlfq3S9f4XhsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:283213248299:android:54902ed38d0c20b0db376e",
+        "android_client_info": {
+          "package_name": "com.mycompany.autobuydefault"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEZ7opXw6af0aBMAor0mnlfq3S9f4XhsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
