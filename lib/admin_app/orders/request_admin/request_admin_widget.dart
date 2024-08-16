@@ -44,6 +44,9 @@ class _RequestAdminWidgetState extends State<RequestAdminWidget> {
 
     _model.textFieldFocusNode6 ??= FocusNode();
 
+    _model.textController7 ??= TextEditingController();
+    _model.textFieldFocusNode7 ??= FocusNode();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -219,7 +222,7 @@ class _RequestAdminWidgetState extends State<RequestAdminWidget> {
                                             0.0, 0.0, 4.0, 0.0),
                                         child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(20.0),
+                                              BorderRadius.circular(8.0),
                                           child: Image.network(
                                             uploadedPhotosItem,
                                             width: 250.0,
@@ -613,6 +616,66 @@ class _RequestAdminWidgetState extends State<RequestAdminWidget> {
                                     letterSpacing: 0.0,
                                   ),
                               validator: _model.textController6Validator
+                                  .asValidator(context),
+                            ),
+                            TextFormField(
+                              controller: _model.textController7,
+                              focusNode: _model.textFieldFocusNode7,
+                              autofocus: false,
+                              readOnly: true,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelText: 'Номер отправителя',
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Manrope',
+                                      letterSpacing: 0.0,
+                                    ),
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Manrope',
+                                      letterSpacing: 0.0,
+                                    ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        FlutterFlowTheme.of(context).alternate,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(2.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        FlutterFlowTheme.of(context).alternate,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(2.0),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(2.0),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Color(0x00000000),
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(2.0),
+                                ),
+                              ),
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Manrope',
+                                    letterSpacing: 0.0,
+                                  ),
+                              validator: _model.textController7Validator
                                   .asValidator(context),
                             ),
                           ].divide(const SizedBox(height: 16.0)),

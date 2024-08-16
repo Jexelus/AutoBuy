@@ -4,6 +4,10 @@ import 'orders_widget.dart' show OrdersWidget;
 import 'package:flutter/material.dart';
 
 class OrdersModel extends FlutterFlowModel<OrdersWidget> {
+  ///  Local state fields for this page.
+
+  String? filterOrders;
+
   ///  State fields for stateful widgets in this page.
 
   // State field(s) for DropDown widget.

@@ -99,12 +99,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const ForgotPasswordWidget(),
         ),
         FFRoute(
-          name: 'Chats',
-          path: '/chats',
-          builder: (context, params) =>
-              params.isEmpty ? const NavBarPage(initialPage: 'Chats') : const ChatsWidget(),
-        ),
-        FFRoute(
           name: 'Profile',
           path: '/profile',
           builder: (context, params) => params.isEmpty
@@ -115,18 +109,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'ChatPage',
           path: '/chatPage',
           builder: (context, params) => ChatPageWidget(
-            receiveChat: params.getParam(
-              'receiveChat',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['chats'],
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'ChatPageCopy',
-          path: '/chatPageCopy',
-          builder: (context, params) => ChatPageCopyWidget(
             orderId: params.getParam(
               'orderId',
               ParamType.String,
@@ -134,11 +116,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-          name: 'ChatsCopy',
-          path: '/chatsCopy',
-          builder: (context, params) => params.isEmpty
-              ? const NavBarPage(initialPage: 'ChatsCopy')
-              : const ChatsCopyWidget(),
+          name: 'Chats',
+          path: '/chats',
+          builder: (context, params) =>
+              params.isEmpty ? const NavBarPage(initialPage: 'Chats') : const ChatsWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

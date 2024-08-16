@@ -3,8 +3,6 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'dart:async';
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'chat_page_model.dart';
@@ -13,10 +11,10 @@ export 'chat_page_model.dart';
 class ChatPageWidget extends StatefulWidget {
   const ChatPageWidget({
     super.key,
-    required this.receiveChat,
-  });
+    String? orderId,
+  }) : orderId = orderId ?? '0';
 
-  final DocumentReference? receiveChat;
+  final String orderId;
 
   @override
   State<ChatPageWidget> createState() => _ChatPageWidgetState();
@@ -47,8 +45,14 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ChatsRecord>(
-      stream: ChatsRecord.getDocument(widget.receiveChat!),
+    return FutureBuilder<List<ChatsRecord>>(
+      future: queryChatsRecordOnce(
+        queryBuilder: (chatsRecord) => chatsRecord.where(
+          'orderId',
+          isEqualTo: widget.orderId,
+        ),
+        singleRecord: true,
+      ),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
@@ -67,8 +71,14 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
             ),
           );
         }
-
-        final chatPageChatsRecord = snapshot.data!;
+        List<ChatsRecord> chatPageChatsRecordList = snapshot.data!;
+        // Return an empty Container when the item does not exist.
+        if (snapshot.data!.isEmpty) {
+          return Container();
+        }
+        final chatPageChatsRecord = chatPageChatsRecordList.isNotEmpty
+            ? chatPageChatsRecordList.first
+            : null;
 
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -89,42 +99,79 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                   size: 30.0,
                 ),
                 onPressed: () async {
-                  unawaited(
-                    () async {
-                      await widget.receiveChat!.update({
-                        ...mapToFirestore(
-                          {
-                            'lastMessageSeenBy':
-                                FieldValue.arrayUnion([currentUserReference]),
-                          },
-                        ),
-                      });
-                    }(),
-                  );
-
-                  context.pushNamed(
-                    'ChatPage',
-                    queryParameters: {
-                      'receiveChat': serializeParam(
-                        widget.receiveChat,
-                        ParamType.DocumentReference,
-                      ),
-                    }.withoutNulls,
-                  );
+                  context.safePop();
                 },
               ),
-              title: AuthUserStreamWidget(
-                builder: (context) => Text(
-                  functions.getOtherUserName(
-                      chatPageChatsRecord.userNames.toList(),
-                      currentUserDisplayName),
-                  style: FlutterFlowTheme.of(context).headlineMedium.override(
-                        fontFamily: 'Outfit',
-                        color: Colors.white,
-                        fontSize: 22.0,
-                        letterSpacing: 0.0,
-                      ),
+              title: StreamBuilder<List<OrdersRecord>>(
+                stream: queryOrdersRecord(
+                  queryBuilder: (ordersRecord) => ordersRecord.where(
+                    'orderId',
+                    isEqualTo: widget.orderId,
+                  ),
+                  singleRecord: true,
                 ),
+                builder: (context, snapshot) {
+                  // Customize what your widget looks like when it's loading.
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: SizedBox(
+                        width: 50.0,
+                        height: 50.0,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            FlutterFlowTheme.of(context).primary,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  List<OrdersRecord> rowOrdersRecordList = snapshot.data!;
+                  // Return an empty Container when the item does not exist.
+                  if (snapshot.data!.isEmpty) {
+                    return Container();
+                  }
+                  final rowOrdersRecord = rowOrdersRecordList.isNotEmpty
+                      ? rowOrdersRecordList.first
+                      : null;
+
+                  return Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 6.0, 0.0),
+                        child: Text(
+                          valueOrDefault<String>(
+                            rowOrdersRecord?.bodyColor,
+                            'white',
+                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .headlineMedium
+                              .override(
+                                fontFamily: 'Outfit',
+                                color: Colors.white,
+                                fontSize: 22.0,
+                                letterSpacing: 0.0,
+                              ),
+                        ),
+                      ),
+                      Text(
+                        valueOrDefault<String>(
+                          rowOrdersRecord?.carmodel,
+                          'nisan',
+                        ),
+                        style: FlutterFlowTheme.of(context)
+                            .headlineMedium
+                            .override(
+                              fontFamily: 'Outfit',
+                              fontSize: 22.0,
+                              letterSpacing: 0.0,
+                            ),
+                      ),
+                    ],
+                  );
+                },
               ),
               actions: const [],
               centerTitle: true,
@@ -138,7 +185,7 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                   Expanded(
                     child: StreamBuilder<List<ChatMessagesRecord>>(
                       stream: queryChatMessagesRecord(
-                        parent: widget.receiveChat,
+                        parent: chatPageChatsRecord?.reference,
                         queryBuilder: (chatMessagesRecord) => chatMessagesRecord
                             .orderBy('timeStamp', descending: true),
                       ),
@@ -413,36 +460,19 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                                 ? null
                                 : () async {
                                     await ChatMessagesRecord.createDoc(
-                                            widget.receiveChat!)
+                                            chatPageChatsRecord!.reference)
                                         .set(createChatMessagesRecordData(
                                       message: _model.textController.text,
                                       timeStamp: getCurrentTimestamp,
                                       uidOfSender: currentUserReference,
-                                      nameOfSender: currentUserDisplayName,
+                                      nameOfSender: currentPhoneNumber,
                                     ));
 
-                                    await widget.receiveChat!.update({
-                                      ...createChatsRecordData(
-                                        lastMessage: _model.textController.text,
-                                        timeStamp: getCurrentTimestamp,
-                                      ),
-                                      ...mapToFirestore(
-                                        {
-                                          'lastMessageSeenBy':
-                                              FieldValue.delete(),
-                                        },
-                                      ),
-                                    });
-
-                                    await widget.receiveChat!.update({
-                                      ...mapToFirestore(
-                                        {
-                                          'lastMessageSeenBy':
-                                              FieldValue.arrayUnion(
-                                                  [currentUserReference]),
-                                        },
-                                      ),
-                                    });
+                                    await chatPageChatsRecord.reference
+                                        .update(createChatsRecordData(
+                                      lastMessage: _model.textController.text,
+                                      timeStamp: getCurrentTimestamp,
+                                    ));
                                     setState(() {
                                       _model.textController?.clear();
                                     });

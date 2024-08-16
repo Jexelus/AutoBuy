@@ -135,7 +135,6 @@ class _NavBarPageState extends State<NavBarPage> {
       'Orders': const OrdersWidget(),
       'Chats': const ChatsWidget(),
       'Profile': const ProfileWidget(),
-      'ChatsCopy': const ChatsCopyWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
 
@@ -188,18 +187,6 @@ class _NavBarPageState extends State<NavBarPage> {
               size: 24.0,
             ),
             label: 'Профиль',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.chat_outlined,
-              size: 24.0,
-            ),
-            activeIcon: Icon(
-              Icons.chat_rounded,
-              size: 24.0,
-            ),
-            label: 'Чаты',
             tooltip: '',
           )
         ],
