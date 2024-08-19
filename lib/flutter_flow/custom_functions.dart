@@ -43,3 +43,17 @@ String getOtherUserName(
       ? listOfNames.last
       : listOfNames.first;
 }
+
+List<DocumentReference> concatenationOfRefs(
+  DocumentReference authUserRef,
+  DocumentReference adminUserRef,
+) {
+  return [authUserRef, adminUserRef];
+}
+
+List<String> oncatenationOfNamesAdminAndUser(
+  String authUserName,
+  String adminUserName,
+) {
+  return [authUserName, adminUserName];
+}

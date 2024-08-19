@@ -3,7 +3,7 @@ import 'request_admin_widget.dart' show RequestAdminWidget;
 import 'package:flutter/material.dart';
 
 class RequestAdminModel extends FlutterFlowModel<RequestAdminWidget> {
-  ///  State fields for stateful widgets in this component.
+  ///  State fields for stateful widgets in this page.
 
   final formKey = GlobalKey<FormState>();
   // State field(s) for TextField widget.
@@ -34,6 +34,10 @@ class RequestAdminModel extends FlutterFlowModel<RequestAdminWidget> {
   FocusNode? textFieldFocusNode7;
   TextEditingController? textController7;
   String? Function(BuildContext, String?)? textController7Validator;
+  // State field(s) for TextField widget.
+  FocusNode? textFieldFocusNode8;
+  TextEditingController? textController8;
+  String? Function(BuildContext, String?)? textController8Validator;
 
   @override
   void initState(BuildContext context) {}
@@ -60,5 +64,8 @@ class RequestAdminModel extends FlutterFlowModel<RequestAdminWidget> {
 
     textFieldFocusNode7?.dispose();
     textController7?.dispose();
+
+    textFieldFocusNode8?.dispose();
+    textController8?.dispose();
   }
 }

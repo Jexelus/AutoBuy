@@ -120,6 +120,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/chats',
           builder: (context, params) =>
               params.isEmpty ? const NavBarPage(initialPage: 'Chats') : const ChatsWidget(),
+        ),
+        FFRoute(
+          name: 'RequestAdmin',
+          path: '/requestAdmin',
+          builder: (context, params) => RequestAdminWidget(
+            requestId: params.getParam(
+              'requestId',
+              ParamType.String,
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -306,11 +316,11 @@ class FFRoute {
           final child = appStateNotifier.loading
               ? Center(
                   child: SizedBox(
-                    width: 50.0,
-                    height: 50.0,
+                    width: 40.0,
+                    height: 40.0,
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        FlutterFlowTheme.of(context).primary,
+                        FlutterFlowTheme.of(context).secondary,
                       ),
                     ),
                   ),

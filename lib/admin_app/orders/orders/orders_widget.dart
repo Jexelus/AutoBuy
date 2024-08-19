@@ -1,4 +1,3 @@
-import '/admin_app/orders/request_admin/request_admin_widget.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -68,61 +67,55 @@ class _OrdersWidgetState extends State<OrdersWidget> {
               ),
               actions: [
                 Align(
-                  alignment: const AlignmentDirectional(0.0, 0.0),
-                  child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 14.0, 0.0),
-                    child: FlutterFlowDropDown<String>(
-                      controller: _model.dropDownValueController ??=
-                          FormFieldController<String>(
-                        _model.dropDownValue ??= 'Все',
-                      ),
-                      options: const [
-                        'На рассмотрении',
-                        'Завершена',
-                        'Одобрена',
-                        'Отклонена',
-                        'Все'
-                      ],
-                      onChanged: (val) async {
-                        setState(() => _model.dropDownValue = val);
-                        _model.filterOrders = _model.dropDownValue == 'Все'
-                            ? null
-                            : _model.dropDownValue;
-                        setState(() {});
-                      },
-                      width: 190.0,
-                      height: 48.0,
-                      textStyle:
-                          FlutterFlowTheme.of(context).titleMedium.override(
-                                fontFamily: 'Manrope',
-                                fontSize: 16.0,
-                                letterSpacing: 0.0,
-                              ),
-                      icon: const Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        color: Colors.white,
-                        size: 25.0,
-                      ),
-                      elevation: 3.0,
-                      borderColor: Colors.white,
-                      borderWidth: 2.0,
-                      borderRadius: 8.0,
-                      margin:
-                          const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 12.0, 0.0),
-                      hidesUnderline: true,
-                      isOverButton: true,
-                      isSearchable: false,
-                      isMultiSelect: false,
-                      labelText: '',
-                      labelTextStyle:
-                          FlutterFlowTheme.of(context).titleMedium.override(
-                                fontFamily: 'Manrope',
-                                color: Colors.white,
-                                fontSize: 14.0,
-                                letterSpacing: 0.0,
-                              ),
+                  alignment: const AlignmentDirectional(1.0, 0.0),
+                  child: FlutterFlowDropDown<String>(
+                    controller: _model.dropDownValueController ??=
+                        FormFieldController<String>(
+                      _model.dropDownValue ??= 'На рассмотрении',
                     ),
+                    options: const [
+                      'На рассмотрении',
+                      'Одобрена',
+                      'Отклонена',
+                      'Все'
+                    ],
+                    onChanged: (val) async {
+                      setState(() => _model.dropDownValue = val);
+                      _model.filterOrders = _model.dropDownValue == 'Все'
+                          ? null
+                          : _model.dropDownValue;
+                      setState(() {});
+                    },
+                    width: 190.0,
+                    height: 48.0,
+                    textStyle:
+                        FlutterFlowTheme.of(context).titleMedium.override(
+                              fontFamily: 'Manrope',
+                              letterSpacing: 0.0,
+                            ),
+                    icon: Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      color: FlutterFlowTheme.of(context).info,
+                      size: 25.0,
+                    ),
+                    fillColor: FlutterFlowTheme.of(context).secondary,
+                    elevation: 0.0,
+                    borderColor: Colors.transparent,
+                    borderWidth: 0.0,
+                    borderRadius: 8.0,
+                    margin:
+                        const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 12.0, 0.0),
+                    hidesUnderline: true,
+                    isOverButton: true,
+                    isSearchable: false,
+                    isMultiSelect: false,
+                    labelText: '',
+                    labelTextStyle:
+                        FlutterFlowTheme.of(context).bodyLarge.override(
+                              fontFamily: 'Manrope',
+                              letterSpacing: 0.0,
+                              fontWeight: FontWeight.w500,
+                            ),
                   ),
                 ),
               ],
@@ -135,139 +128,125 @@ class _OrdersWidgetState extends State<OrdersWidget> {
               return SafeArea(
                 top: false,
                 child: Align(
-                  alignment: const AlignmentDirectional(0.0, 0.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      StreamBuilder<List<OrdersRecord>>(
-                        stream: queryOrdersRecord(
-                          queryBuilder: (ordersRecord) => ordersRecord.where(
-                            'approved',
-                            isEqualTo: _model.filterOrders != ''
-                                ? _model.filterOrders
-                                : null,
-                          ),
-                        ),
-                        builder: (context, snapshot) {
-                          // Customize what your widget looks like when it's loading.
-                          if (!snapshot.hasData) {
-                            return Center(
-                              child: SizedBox(
-                                width: 50.0,
-                                height: 50.0,
-                                child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    FlutterFlowTheme.of(context).primary,
-                                  ),
-                                ),
+                  alignment: const AlignmentDirectional(0.0, -1.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Align(
+                          alignment: const AlignmentDirectional(0.0, -1.0),
+                          child: StreamBuilder<List<OrdersRecord>>(
+                            stream: queryOrdersRecord(
+                              queryBuilder: (ordersRecord) =>
+                                  ordersRecord.where(
+                                'approved',
+                                isEqualTo: _model.filterOrders != ''
+                                    ? _model.filterOrders
+                                    : null,
                               ),
-                            );
-                          }
-                          List<OrdersRecord> listViewOrdersRecordList =
-                              snapshot.data!;
-
-                          return ListView.separated(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0),
-                            primary: false,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: listViewOrdersRecordList.length,
-                            separatorBuilder: (_, __) => const SizedBox(height: 10.0),
-                            itemBuilder: (context, listViewIndex) {
-                              final listViewOrdersRecord =
-                                  listViewOrdersRecordList[listViewIndex];
-                              return Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    10.0, 0.0, 10.0, 0.0),
-                                child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    border: Border.all(
-                                      color: FlutterFlowTheme.of(context)
-                                          .alternate,
-                                      width: 2.0,
+                            ),
+                            builder: (context, snapshot) {
+                              // Customize what your widget looks like when it's loading.
+                              if (!snapshot.hasData) {
+                                return Center(
+                                  child: SizedBox(
+                                    width: 40.0,
+                                    height: 40.0,
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        FlutterFlowTheme.of(context).secondary,
+                                      ),
                                     ),
                                   ),
-                                  child: Padding(
+                                );
+                              }
+                              List<OrdersRecord> listViewOrdersRecordList =
+                                  snapshot.data!;
+
+                              return ListView.separated(
+                                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                primary: false,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: listViewOrdersRecordList.length,
+                                separatorBuilder: (_, __) =>
+                                    const SizedBox(height: 16.0),
+                                itemBuilder: (context, listViewIndex) {
+                                  final listViewOrdersRecord =
+                                      listViewOrdersRecordList[listViewIndex];
+                                  return Padding(
                                     padding: const EdgeInsetsDirectional.fromSTEB(
-                                        12.0, 10.0, 12.0, 10.0),
-                                    child: InkWell(
-                                      splashColor: Colors.transparent,
-                                      focusColor: Colors.transparent,
-                                      hoverColor: Colors.transparent,
-                                      highlightColor: Colors.transparent,
-                                      onTap: () async {
-                                        await showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.transparent,
-                                          enableDrag: false,
-                                          context: context,
-                                          builder: (context) {
-                                            return GestureDetector(
-                                              onTap: () =>
-                                                  FocusScope.of(context)
-                                                      .unfocus(),
-                                              child: Padding(
-                                                padding:
-                                                    MediaQuery.viewInsetsOf(
-                                                        context),
-                                                child: SizedBox(
-                                                  height:
-                                                      MediaQuery.sizeOf(context)
-                                                              .height *
-                                                          1.0,
-                                                  child: RequestAdminWidget(
-                                                    requestId:
-                                                        listViewOrdersRecord
-                                                            .orderId,
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ).then((value) => safeSetState(() {}));
-                                      },
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            child: Image.network(
-                                              listViewOrdersRecord
-                                                  .photoList.first,
-                                              width: 100.0,
-                                              height: 100.0,
-                                              fit: BoxFit.cover,
-                                            ),
+                                        10.0, 0.0, 10.0, 0.0),
+                                    child: SafeArea(
+                                      child: Container(
+                                        width:
+                                            MediaQuery.sizeOf(context).width *
+                                                1.0,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          border: Border.all(
+                                            color: FlutterFlowTheme.of(context)
+                                                .alternate,
+                                            width: 2.0,
                                           ),
-                                          Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Align(
-                                                alignment: const AlignmentDirectional(
-                                                    -1.0, 0.0),
-                                                child: Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          20.0, 0.0, 0.0, 0.0),
-                                                  child: Container(
+                                        ),
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  10.0, 10.0, 10.0, 10.0),
+                                          child: InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              context.pushNamed(
+                                                'RequestAdmin',
+                                                queryParameters: {
+                                                  'requestId': serializeParam(
+                                                    listViewOrdersRecord
+                                                        .orderId,
+                                                    ParamType.String,
+                                                  ),
+                                                }.withoutNulls,
+                                              );
+                                            },
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                  child: Image.network(
+                                                    listViewOrdersRecord
+                                                        .photoList.first,
                                                     width: 100.0,
                                                     height: 100.0,
-                                                    constraints: const BoxConstraints(
-                                                      maxWidth: 120.0,
-                                                    ),
-                                                    decoration: const BoxDecoration(),
-                                                    alignment:
-                                                        const AlignmentDirectional(
-                                                            -1.0, 0.0),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                                Container(
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                              .width *
+                                                          0.27,
+                                                  height: 100.0,
+                                                  decoration: const BoxDecoration(),
+                                                  alignment:
+                                                      const AlignmentDirectional(
+                                                          -1.0, 0.0),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(5.0, 0.0,
+                                                                0.0, 0.0),
                                                     child: Text(
                                                       listViewOrdersRecord
                                                           .carmodel
@@ -277,7 +256,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                                       ),
                                                       textAlign:
                                                           TextAlign.start,
-                                                      maxLines: 3,
+                                                      maxLines: 4,
                                                       style: FlutterFlowTheme
                                                               .of(context)
                                                           .bodyMedium
@@ -290,70 +269,48 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Align(
-                                                alignment: const AlignmentDirectional(
-                                                    1.0, 0.0),
-                                                child: Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          10.0, 0.0, 0.0, 0.0),
-                                                  child: Container(
-                                                    width: 110.0,
-                                                    height: 100.0,
-                                                    constraints: const BoxConstraints(
-                                                      maxWidth: 110.0,
+                                                Container(
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                              .width *
+                                                          0.35,
+                                                  height: 100.0,
+                                                  decoration: const BoxDecoration(),
+                                                  alignment:
+                                                      const AlignmentDirectional(
+                                                          1.0, 0.0),
+                                                  child: Text(
+                                                    valueOrDefault<String>(
+                                                      listViewOrdersRecord
+                                                          .approved,
+                                                      'На рассмотрении',
                                                     ),
-                                                    decoration: BoxDecoration(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .secondaryBackground,
-                                                    ),
-                                                    alignment:
-                                                        const AlignmentDirectional(
-                                                            1.0, 0.0),
-                                                    child: Text(
-                                                      valueOrDefault<String>(
-                                                        listViewOrdersRecord
-                                                            .approved,
-                                                        'В рассмотрении',
-                                                      ),
-                                                      textAlign: TextAlign.end,
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .bodyMedium
-                                                          .override(
-                                                            fontFamily:
-                                                                'Manrope',
-                                                            fontSize: 16.0,
-                                                            letterSpacing: 0.0,
-                                                          ),
-                                                    ),
+                                                    textAlign: TextAlign.end,
+                                                    maxLines: 1,
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily: 'Manrope',
+                                                          fontSize: 14.0,
+                                                          letterSpacing: 0.0,
+                                                        ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                      ),
-                    ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

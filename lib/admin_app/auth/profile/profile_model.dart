@@ -10,6 +10,9 @@ class ProfileModel extends FlutterFlowModel<ProfileWidget> {
       FFUploadedFile(bytes: Uint8List.fromList([]));
   String uploadedFileUrl = '';
 
+  // State field(s) for Switch widget.
+  bool? switchValue;
+
   @override
   void initState(BuildContext context) {}
 

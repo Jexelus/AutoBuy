@@ -6,3 +6,5 @@ export '/admin_app/auth/forgot_password/forgot_password_widget.dart'
 export '/admin_app/auth/profile/profile_widget.dart' show ProfileWidget;
 export '/admin_app/chat/chat_page/chat_page_widget.dart' show ChatPageWidget;
 export '/admin_app/chat/chats/chats_widget.dart' show ChatsWidget;
+export '/admin_app/orders/request_admin/request_admin_widget.dart'
+    show RequestAdminWidget;
