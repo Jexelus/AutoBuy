@@ -116,13 +116,13 @@ class _RequestAdminWidgetState extends State<RequestAdminWidget> {
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 12.0, 0.0),
                       child: SingleChildScrollView(
-                        primary: false,
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ListView(
                               padding: EdgeInsets.zero,
+                              primary: false,
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
                               children: [
@@ -849,137 +849,149 @@ class _RequestAdminWidgetState extends State<RequestAdminWidget> {
                                     );
                                   },
                                 ),
-                                Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    FFButtonWidget(
-                                      onPressed: () async {
-                                        context.pushNamed(
-                                          'ChatPage',
-                                          queryParameters: {
-                                            'orderId': serializeParam(
-                                              widget.requestId,
-                                              ParamType.String,
-                                            ),
-                                          }.withoutNulls,
-                                        );
-                                      },
-                                      text: 'Перейти в чат',
-                                      options: FFButtonOptions(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height: 46.0,
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        iconPadding:
-                                            const EdgeInsetsDirectional.fromSTEB(
-                                                0.0, 0.0, 0.0, 0.0),
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondary,
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .titleSmall
-                                            .override(
-                                              fontFamily: 'Manrope',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .info,
-                                              letterSpacing: 0.0,
-                                            ),
-                                        borderRadius:
-                                            BorderRadius.circular(6.0),
+                                SingleChildScrollView(
+                                  primary: false,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      FFButtonWidget(
+                                        onPressed: () async {
+                                          context.pushNamed(
+                                            'ChatPage',
+                                            queryParameters: {
+                                              'orderId': serializeParam(
+                                                widget.requestId,
+                                                ParamType.String,
+                                              ),
+                                            }.withoutNulls,
+                                          );
+                                        },
+                                        text: 'Перейти в чат',
+                                        options: FFButtonOptions(
+                                          width:
+                                              MediaQuery.sizeOf(context).width *
+                                                  1.0,
+                                          height: 46.0,
+                                          padding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 0.0, 0.0, 0.0),
+                                          iconPadding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 0.0, 0.0, 0.0),
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondary,
+                                          textStyle: FlutterFlowTheme.of(
+                                                  context)
+                                              .titleSmall
+                                              .override(
+                                                fontFamily: 'Manrope',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .info,
+                                                letterSpacing: 0.0,
+                                              ),
+                                          borderRadius:
+                                              BorderRadius.circular(6.0),
+                                        ),
                                       ),
-                                    ),
-                                    if (bottomSheetEditOrdersRecord.approved ==
-                                            'На рассмотрении'
-                                        ? true
-                                        : false)
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          FFButtonWidget(
-                                            onPressed: () async {
-                                              await bottomSheetEditOrdersRecord
-                                                  .reference
-                                                  .update(
-                                                      createOrdersRecordData(
-                                                approved: 'Отклонена',
-                                              ));
+                                      if (bottomSheetEditOrdersRecord
+                                                  .approved ==
+                                              'На рассмотрении'
+                                          ? true
+                                          : false)
+                                        Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            FFButtonWidget(
+                                              onPressed: () async {
+                                                await bottomSheetEditOrdersRecord
+                                                    .reference
+                                                    .update(
+                                                        createOrdersRecordData(
+                                                  approved: 'Отклонена',
+                                                ));
 
-                                              context.pushNamed('Orders');
-                                            },
-                                            text: 'Отклонить',
-                                            options: FFButtonOptions(
-                                              width: MediaQuery.sizeOf(context)
-                                                      .width *
-                                                  0.46,
-                                              height: 46.0,
-                                              padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                              iconPadding: const EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .error,
-                                              textStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .override(
-                                                        fontFamily: 'Manrope',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .info,
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                              borderRadius:
-                                                  BorderRadius.circular(6.0),
+                                                context.pushNamed('Orders');
+                                              },
+                                              text: 'Отклонить',
+                                              options: FFButtonOptions(
+                                                width:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width *
+                                                        0.46,
+                                                height: 46.0,
+                                                padding: const EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        0.0, 0.0, 0.0, 0.0),
+                                                iconPadding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(
+                                                            0.0, 0.0, 0.0, 0.0),
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                textStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .titleSmall
+                                                        .override(
+                                                          fontFamily: 'Manrope',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .info,
+                                                          letterSpacing: 0.0,
+                                                        ),
+                                                borderRadius:
+                                                    BorderRadius.circular(6.0),
+                                              ),
                                             ),
-                                          ),
-                                          FFButtonWidget(
-                                            onPressed: () async {
-                                              await bottomSheetEditOrdersRecord
-                                                  .reference
-                                                  .update(
-                                                      createOrdersRecordData(
-                                                approved: 'Одобрена',
-                                              ));
+                                            FFButtonWidget(
+                                              onPressed: () async {
+                                                await bottomSheetEditOrdersRecord
+                                                    .reference
+                                                    .update(
+                                                        createOrdersRecordData(
+                                                  approved: 'Одобрена',
+                                                ));
 
-                                              context.pushNamed('Orders');
-                                            },
-                                            text: 'Одобрить',
-                                            options: FFButtonOptions(
-                                              width: MediaQuery.sizeOf(context)
-                                                      .width *
-                                                  0.46,
-                                              height: 46.0,
-                                              padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                              iconPadding: const EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .success,
-                                              textStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .override(
-                                                        fontFamily: 'Manrope',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .info,
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                              borderRadius:
-                                                  BorderRadius.circular(6.0),
+                                                context.pushNamed('Orders');
+                                              },
+                                              text: 'Одобрить',
+                                              options: FFButtonOptions(
+                                                width:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width *
+                                                        0.46,
+                                                height: 46.0,
+                                                padding: const EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        0.0, 0.0, 0.0, 0.0),
+                                                iconPadding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(
+                                                            0.0, 0.0, 0.0, 0.0),
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .success,
+                                                textStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .titleSmall
+                                                        .override(
+                                                          fontFamily: 'Manrope',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .info,
+                                                          letterSpacing: 0.0,
+                                                        ),
+                                                borderRadius:
+                                                    BorderRadius.circular(6.0),
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                  ].divide(const SizedBox(height: 12.0)),
+                                          ],
+                                        ),
+                                    ].divide(const SizedBox(height: 12.0)),
+                                  ),
                                 ),
                               ].divide(const SizedBox(height: 16.0)),
                             ),

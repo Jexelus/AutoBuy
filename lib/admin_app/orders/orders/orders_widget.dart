@@ -131,7 +131,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                   alignment: const AlignmentDirectional(0.0, -1.0),
                   child: SingleChildScrollView(
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
                         Align(
                           alignment: const AlignmentDirectional(0.0, -1.0),
@@ -164,140 +164,164 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                                   snapshot.data!;
 
                               return ListView.separated(
-                                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                padding: const EdgeInsets.symmetric(vertical: 4.0),
                                 primary: false,
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
                                 itemCount: listViewOrdersRecordList.length,
                                 separatorBuilder: (_, __) =>
-                                    const SizedBox(height: 16.0),
+                                    const SizedBox(height: 4.0),
                                 itemBuilder: (context, listViewIndex) {
                                   final listViewOrdersRecord =
                                       listViewOrdersRecordList[listViewIndex];
                                   return Padding(
                                     padding: const EdgeInsetsDirectional.fromSTEB(
                                         10.0, 0.0, 10.0, 0.0),
-                                    child: SafeArea(
-                                      child: Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          border: Border.all(
+                                    child: InkWell(
+                                      splashColor: Colors.transparent,
+                                      focusColor: Colors.transparent,
+                                      hoverColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () async {
+                                        context.pushNamed(
+                                          'RequestAdmin',
+                                          queryParameters: {
+                                            'requestId': serializeParam(
+                                              listViewOrdersRecord.orderId,
+                                              ParamType.String,
+                                            ),
+                                          }.withoutNulls,
+                                        );
+                                      },
+                                      child: SafeArea(
+                                        child: Container(
+                                          width:
+                                              MediaQuery.sizeOf(context).width *
+                                                  1.0,
+                                          decoration: BoxDecoration(
                                             color: FlutterFlowTheme.of(context)
-                                                .alternate,
-                                            width: 2.0,
+                                                .secondaryBackground,
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            border: Border.all(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .alternate,
+                                              width: 2.0,
+                                            ),
                                           ),
-                                        ),
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  10.0, 10.0, 10.0, 10.0),
-                                          child: InkWell(
-                                            splashColor: Colors.transparent,
-                                            focusColor: Colors.transparent,
-                                            hoverColor: Colors.transparent,
-                                            highlightColor: Colors.transparent,
-                                            onTap: () async {
-                                              context.pushNamed(
-                                                'RequestAdmin',
-                                                queryParameters: {
-                                                  'requestId': serializeParam(
-                                                    listViewOrdersRecord
-                                                        .orderId,
-                                                    ParamType.String,
-                                                  ),
-                                                }.withoutNulls,
-                                              );
-                                            },
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                  child: Image.network(
-                                                    listViewOrdersRecord
-                                                        .photoList.first,
-                                                    width: 100.0,
-                                                    height: 100.0,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width:
-                                                      MediaQuery.sizeOf(context)
-                                                              .width *
-                                                          0.27,
-                                                  height: 100.0,
-                                                  decoration: const BoxDecoration(),
-                                                  alignment:
-                                                      const AlignmentDirectional(
-                                                          -1.0, 0.0),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                            .fromSTEB(5.0, 0.0,
-                                                                0.0, 0.0),
-                                                    child: Text(
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    10.0, 10.0, 10.0, 10.0),
+                                            child: InkWell(
+                                              splashColor: Colors.transparent,
+                                              focusColor: Colors.transparent,
+                                              hoverColor: Colors.transparent,
+                                              highlightColor:
+                                                  Colors.transparent,
+                                              onTap: () async {
+                                                context.pushNamed(
+                                                  'RequestAdmin',
+                                                  queryParameters: {
+                                                    'requestId': serializeParam(
                                                       listViewOrdersRecord
-                                                          .carmodel
-                                                          .maybeHandleOverflow(
-                                                        maxChars: 50,
-                                                        replacement: '…',
+                                                          .orderId,
+                                                      ParamType.String,
+                                                    ),
+                                                  }.withoutNulls,
+                                                );
+                                              },
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    child: Image.network(
+                                                      listViewOrdersRecord
+                                                          .photoList.first,
+                                                      width: 100.0,
+                                                      height: 100.0,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: MediaQuery.sizeOf(
+                                                                context)
+                                                            .width *
+                                                        0.27,
+                                                    height: 100.0,
+                                                    decoration: const BoxDecoration(),
+                                                    alignment:
+                                                        const AlignmentDirectional(
+                                                            -1.0, 0.0),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  5.0,
+                                                                  0.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      child: Text(
+                                                        listViewOrdersRecord
+                                                            .carmodel
+                                                            .maybeHandleOverflow(
+                                                          maxChars: 50,
+                                                          replacement: '…',
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        maxLines: 4,
+                                                        style: FlutterFlowTheme
+                                                                .of(context)
+                                                            .bodyMedium
+                                                            .override(
+                                                              fontFamily:
+                                                                  'Manrope',
+                                                              fontSize: 16.0,
+                                                              letterSpacing:
+                                                                  0.0,
+                                                            ),
                                                       ),
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                      maxLines: 4,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: MediaQuery.sizeOf(
+                                                                context)
+                                                            .width *
+                                                        0.35,
+                                                    height: 100.0,
+                                                    decoration: const BoxDecoration(),
+                                                    alignment:
+                                                        const AlignmentDirectional(
+                                                            1.0, 0.0),
+                                                    child: Text(
+                                                      valueOrDefault<String>(
+                                                        listViewOrdersRecord
+                                                            .approved,
+                                                        'На рассмотрении',
+                                                      ),
+                                                      textAlign: TextAlign.end,
+                                                      maxLines: 1,
                                                       style: FlutterFlowTheme
                                                               .of(context)
                                                           .bodyMedium
                                                           .override(
                                                             fontFamily:
                                                                 'Manrope',
-                                                            fontSize: 16.0,
+                                                            fontSize: 14.0,
                                                             letterSpacing: 0.0,
                                                           ),
                                                     ),
                                                   ),
-                                                ),
-                                                Container(
-                                                  width:
-                                                      MediaQuery.sizeOf(context)
-                                                              .width *
-                                                          0.35,
-                                                  height: 100.0,
-                                                  decoration: const BoxDecoration(),
-                                                  alignment:
-                                                      const AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Text(
-                                                    valueOrDefault<String>(
-                                                      listViewOrdersRecord
-                                                          .approved,
-                                                      'На рассмотрении',
-                                                    ),
-                                                    textAlign: TextAlign.end,
-                                                    maxLines: 1,
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily: 'Manrope',
-                                                          fontSize: 14.0,
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                                  ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),

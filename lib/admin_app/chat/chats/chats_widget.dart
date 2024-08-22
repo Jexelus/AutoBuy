@@ -98,13 +98,13 @@ class _ChatsWidgetState extends State<ChatsWidget> {
                                   snapshot.data!;
 
                               return ListView.separated(
-                                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                padding: const EdgeInsets.symmetric(vertical: 4.0),
                                 primary: false,
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
                                 itemCount: listViewChatsRecordList.length,
                                 separatorBuilder: (_, __) =>
-                                    const SizedBox(height: 16.0),
+                                    const SizedBox(height: 4.0),
                                 itemBuilder: (context, listViewIndex) {
                                   final listViewChatsRecord =
                                       listViewChatsRecordList[listViewIndex];

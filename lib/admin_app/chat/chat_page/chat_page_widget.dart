@@ -49,9 +49,16 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
         ),
         singleRecord: true,
       ).then((s) => s.firstOrNull);
+      _model.chatebat = await queryChatsRecordOnce(
+        queryBuilder: (chatsRecord) => chatsRecord.where(
+          'orderId',
+          isEqualTo: widget.orderId,
+        ),
+        singleRecord: true,
+      ).then((s) => s.firstOrNull);
       _model.usrOfcrRef =
           await UsersRecord.getDocumentOnce(_model.order!.userRefOfCreator!);
-      if (!(_model.order != null ? true : false)) {
+      if (!(_model.chatebat != null ? true : false)) {
         await ChatsRecord.collection.doc().set({
           ...createChatsRecordData(
             lastMessage: 'Напишите первым!',
@@ -69,6 +76,8 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
             },
           ),
         });
+        _model.needUpdate = true;
+        setState(() {});
       }
     });
 
@@ -87,160 +96,157 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<ChatsRecord>>(
-      future: queryChatsRecordOnce(
-        queryBuilder: (chatsRecord) => chatsRecord.where(
-          'orderId',
-          isEqualTo: widget.orderId,
-        ),
-        singleRecord: true,
-      ),
-      builder: (context, snapshot) {
-        // Customize what your widget looks like when it's loading.
-        if (!snapshot.hasData) {
-          return Scaffold(
-            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-            body: Center(
-              child: SizedBox(
-                width: 40.0,
-                height: 40.0,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    FlutterFlowTheme.of(context).secondary,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        body: NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, _) => [
+            SliverAppBar(
+              pinned: true,
+              floating: false,
+              backgroundColor: FlutterFlowTheme.of(context).secondary,
+              automaticallyImplyLeading: false,
+              leading: FlutterFlowIconButton(
+                borderColor: Colors.transparent,
+                borderRadius: 30.0,
+                borderWidth: 1.0,
+                buttonSize: 60.0,
+                icon: const Icon(
+                  Icons.arrow_back_rounded,
+                  color: Colors.white,
+                  size: 30.0,
+                ),
+                onPressed: () async {
+                  context.safePop();
+                },
+              ),
+              title: Align(
+                alignment: const AlignmentDirectional(-1.0, 0.0),
+                child: StreamBuilder<List<OrdersRecord>>(
+                  stream: queryOrdersRecord(
+                    queryBuilder: (ordersRecord) => ordersRecord.where(
+                      'orderId',
+                      isEqualTo: widget.orderId,
+                    ),
+                    singleRecord: true,
                   ),
+                  builder: (context, snapshot) {
+                    // Customize what your widget looks like when it's loading.
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: SizedBox(
+                          width: 40.0,
+                          height: 40.0,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              FlutterFlowTheme.of(context).secondary,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    List<OrdersRecord> rowOrdersRecordList = snapshot.data!;
+                    // Return an empty Container when the item does not exist.
+                    if (snapshot.data!.isEmpty) {
+                      return Container();
+                    }
+                    final rowOrdersRecord = rowOrdersRecordList.isNotEmpty
+                        ? rowOrdersRecordList.first
+                        : null;
+
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            valueOrDefault<String>(
+                              rowOrdersRecord?.bodyColor,
+                              'white',
+                            ),
+                            textAlign: TextAlign.start,
+                            style: FlutterFlowTheme.of(context)
+                                .headlineMedium
+                                .override(
+                                  fontFamily: 'Outfit',
+                                  color: FlutterFlowTheme.of(context).info,
+                                  fontSize: 22.0,
+                                  letterSpacing: 0.0,
+                                ),
+                          ),
+                          Text(
+                            valueOrDefault<String>(
+                              rowOrdersRecord?.carmodel,
+                              'nisan',
+                            ),
+                            textAlign: TextAlign.start,
+                            style: FlutterFlowTheme.of(context)
+                                .headlineMedium
+                                .override(
+                                  fontFamily: 'Outfit',
+                                  color: FlutterFlowTheme.of(context).info,
+                                  fontSize: 22.0,
+                                  letterSpacing: 0.0,
+                                ),
+                          ),
+                        ].divide(const SizedBox(width: 6.0)),
+                      ),
+                    );
+                  },
                 ),
               ),
-            ),
-          );
-        }
-        List<ChatsRecord> chatPageChatsRecordList = snapshot.data!;
-        // Return an empty Container when the item does not exist.
-        if (snapshot.data!.isEmpty) {
-          return Container();
-        }
-        final chatPageChatsRecord = chatPageChatsRecordList.isNotEmpty
-            ? chatPageChatsRecordList.first
-            : null;
-
-        return GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Scaffold(
-            key: scaffoldKey,
-            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-            body: NestedScrollView(
-              floatHeaderSlivers: true,
-              headerSliverBuilder: (context, _) => [
-                SliverAppBar(
-                  pinned: true,
-                  floating: false,
-                  backgroundColor: FlutterFlowTheme.of(context).secondary,
-                  automaticallyImplyLeading: false,
-                  leading: FlutterFlowIconButton(
-                    borderColor: Colors.transparent,
-                    borderRadius: 30.0,
-                    borderWidth: 1.0,
-                    buttonSize: 60.0,
-                    icon: const Icon(
-                      Icons.arrow_back_rounded,
-                      color: Colors.white,
-                      size: 30.0,
+              actions: const [],
+              centerTitle: true,
+              elevation: 0.0,
+            )
+          ],
+          body: Builder(
+            builder: (context) {
+              return SafeArea(
+                top: false,
+                child: FutureBuilder<List<ChatsRecord>>(
+                  future: queryChatsRecordOnce(
+                    queryBuilder: (chatsRecord) => chatsRecord.where(
+                      'orderId',
+                      isEqualTo: widget.orderId,
                     ),
-                    onPressed: () async {
-                      context.safePop();
-                    },
+                    singleRecord: true,
                   ),
-                  title: Align(
-                    alignment: const AlignmentDirectional(-1.0, 0.0),
-                    child: StreamBuilder<List<OrdersRecord>>(
-                      stream: queryOrdersRecord(
-                        queryBuilder: (ordersRecord) => ordersRecord.where(
-                          'orderId',
-                          isEqualTo: widget.orderId,
-                        ),
-                        singleRecord: true,
-                      ),
-                      builder: (context, snapshot) {
-                        // Customize what your widget looks like when it's loading.
-                        if (!snapshot.hasData) {
-                          return Center(
-                            child: SizedBox(
-                              width: 40.0,
-                              height: 40.0,
-                              child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  FlutterFlowTheme.of(context).secondary,
-                                ),
-                              ),
+                  builder: (context, snapshot) {
+                    // Customize what your widget looks like when it's loading.
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: SizedBox(
+                          width: 40.0,
+                          height: 40.0,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              FlutterFlowTheme.of(context).secondary,
                             ),
-                          );
-                        }
-                        List<OrdersRecord> rowOrdersRecordList = snapshot.data!;
-                        // Return an empty Container when the item does not exist.
-                        if (snapshot.data!.isEmpty) {
-                          return Container();
-                        }
-                        final rowOrdersRecord = rowOrdersRecordList.isNotEmpty
-                            ? rowOrdersRecordList.first
-                            : null;
-
-                        return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                valueOrDefault<String>(
-                                  rowOrdersRecord?.bodyColor,
-                                  'white',
-                                ),
-                                textAlign: TextAlign.start,
-                                style: FlutterFlowTheme.of(context)
-                                    .headlineMedium
-                                    .override(
-                                      fontFamily: 'Outfit',
-                                      color: FlutterFlowTheme.of(context).info,
-                                      fontSize: 22.0,
-                                      letterSpacing: 0.0,
-                                    ),
-                              ),
-                              Text(
-                                valueOrDefault<String>(
-                                  rowOrdersRecord?.carmodel,
-                                  'nisan',
-                                ),
-                                textAlign: TextAlign.start,
-                                style: FlutterFlowTheme.of(context)
-                                    .headlineMedium
-                                    .override(
-                                      fontFamily: 'Outfit',
-                                      color: FlutterFlowTheme.of(context).info,
-                                      fontSize: 22.0,
-                                      letterSpacing: 0.0,
-                                    ),
-                              ),
-                            ].divide(const SizedBox(width: 6.0)),
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                  actions: const [],
-                  centerTitle: true,
-                  elevation: 0.0,
-                )
-              ],
-              body: Builder(
-                builder: (context) {
-                  return SafeArea(
-                    top: false,
-                    child: Column(
+                        ),
+                      );
+                    }
+                    List<ChatsRecord> columnChatsRecordList = snapshot.data!;
+                    // Return an empty Container when the item does not exist.
+                    if (snapshot.data!.isEmpty) {
+                      return Container();
+                    }
+                    final columnChatsRecord = columnChatsRecordList.isNotEmpty
+                        ? columnChatsRecordList.first
+                        : null;
+
+                    return Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
                           child: StreamBuilder<List<ChatMessagesRecord>>(
                             stream: queryChatMessagesRecord(
-                              parent: chatPageChatsRecord?.reference,
+                              parent: columnChatsRecord?.reference,
                               queryBuilder: (chatMessagesRecord) =>
                                   chatMessagesRecord.orderBy('timeStamp',
                                       descending: true),
@@ -558,8 +564,7 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                                       ? null
                                       : () async {
                                           await ChatMessagesRecord.createDoc(
-                                                  chatPageChatsRecord!
-                                                      .reference)
+                                                  columnChatsRecord!.reference)
                                               .set(createChatMessagesRecordData(
                                             message: _model.textController.text,
                                             timeStamp: getCurrentTimestamp,
@@ -567,7 +572,7 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                                             nameOfSender: currentPhoneNumber,
                                           ));
 
-                                          await chatPageChatsRecord.reference
+                                          await columnChatsRecord.reference
                                               .update(createChatsRecordData(
                                             lastMessage:
                                                 _model.textController.text,
@@ -583,14 +588,14 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                           ),
                         ),
                       ],
-                    ),
-                  );
-                },
-              ),
-            ),
+                    );
+                  },
+                ),
+              );
+            },
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
